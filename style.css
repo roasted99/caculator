@@ -7,16 +7,18 @@ body {
   padding: 0;
   margin: 0;
   background: linear-gradient(60deg, rgb(34, 191, 196), rgb(64, 99, 173));
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  height: 100vh;
 }
 
 .calculator {
   display: grid;
   justify-content: center;
   align-content: center;
-  min-height: 100vh;
   grid-template-columns: repeat(4, 100px);
   grid-template-rows: repeat(6, 100px);
- 
 }
 
 .calculator > button {
@@ -31,10 +33,14 @@ body {
 }
 
 .operate {
-    background: rgba(255, 170, 13, 0.75)
+    background: rgba(255, 170, 13, 1);
 }
 
-.calculator > button:hover {
+.operate:hover {
+  background: rgba(255, 170, 13, 0.8)
+}
+
+.num:hover {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
@@ -51,4 +57,6 @@ body {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
