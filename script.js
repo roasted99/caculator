@@ -4,60 +4,105 @@ const equalsButton = document.querySelector('[data-type=equal]')
 const deleteButton = document.querySelector('[data-type=delete]')
 const allClearButton = document.querySelector('.clear')
 const display = document.querySelector('.output')
-//const keys = document.querySelectorAll('button')
+const displayValue = display.textContent
 
 numberButtons.forEach(numberButton => {
     numberButton.addEventListener('click', e => {
-        const numValue = e.target.dataset.key;
+        const numValue = e.target.textContent;
         appendNumber(numValue);
     })
 })
 
-function appendNumber(numValue){
-    const displayValue = display.textContent
-    if (displayValue === 0){
-        display.textContent = numValue.toString()
-    } else {
-        display.textContent = displayValue + numValue.toString()
-    }
-    
-}
-
 operationButtons.forEach(operationButton => {
     operationButton.addEventListener('click', e => {
-        e.target.dataset.state = 'selected'
-        const operator = e.target.dataset.key
-        //operator.state = 'selected'
-       compute(prev, operator, current)
+        operation = e.target.textContent
+        chooseOperator(operation)
     })
 })
 
-allClearButton.addEventListener('click', e => {
-    display.textContent = ''
-    delete e.target.dataset
+allClearButton.addEventListener('click', clearOperator)
+
+equalsButton.addEventListener('click', () => {
+    display.textContent = compute()
+
 })
 
-function chooseOperation(operation){
+deleteButton.addEventListener('click', () => {
+    display.textContent = display.textContent.toString().slice(0, -1)
+})
 
+function appendNumber(numValue) {
+    
+    const displayValue = display.textContent
+    
+    if (displayValue === '0') {
+        display.textContent = numValue
+    } else {
+        display.textContent = displayValue + numValue
+    }
+    reset()
+    currentOperand = display.textContent
+    if (displayValue === '.' && display.textContent.includes('.')) return
 }
 
-// function compute(prev, operator, current) {
-//     let computation
-//     prev = parseInt(previousNum);
-//     current = parseInt(currentNum)
-//     if (operator === 'add') return computation = prev + current;
-//     if (operator === 'subtract') return computation = prev - current;
-//     if (operator === 'multiply') return computation = prev * current;
-//     if (operator === 'divide') return computation = prev / current;
-//     if (operator === 'percentage') return computation = prev / 100;
-//     currentNum = computation;
-//     operator = undefined;
-//     previousNum = ''
-//}
+function reset(){
+    //display.textContent = ''
+    currentOperand = ''
+}
 
-// function updateDisplay(currentNum){
-//     display.innerText = currentNum
-// }
+function chooseOperator(operation) {
+    if (currentOperand === '') return
+    currentOperation = operation
+    //currentOperand = display.textContent
+    prevOperand = currentOperand
 
+    if (prevOperand !== '') compute()
+    currentOperand = ''
+    // console.log(currentOperation)
+     console.log(prevOperand)
+    //console.log(currentOperand)
+}
 
+function evaluate(){
+    if (currentOperand === '') return
+    //prevOperand = currentOperand
+    currentOperation = operation
+   // currentOperand = ''
+    currentOperand = compute()
+   // console.log(prevOperand)
+   // console.log(current)
+}
 
+function compute() {
+    let computation
+    current = parseFloat(currentOperand)
+    prev = parseFloat(prevOperand)
+    if (isNaN(prev) || isNaN(current)) return
+    switch (currentOperation) {
+        case '+':
+            computation = prev + current
+            break;
+        case '-':
+            computation = prev - current
+            break;
+        case 'x':
+            computation = prev * current
+            break;
+        case '÷':
+            computation = prev / current
+            break;
+        case '%':
+            computation = prev / 100
+            break;
+        default:
+            return
+    }
+   return computation
+}
+
+function clearOperator() {
+    display.textContent = '0'
+    currentOperand = ''
+    prevOperand = ''
+    currentOperation = undefined
+}

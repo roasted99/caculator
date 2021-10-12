@@ -7,10 +7,6 @@ body {
   padding: 0;
   margin: 0;
   background: linear-gradient(60deg, rgb(34, 191, 196), rgb(64, 99, 173));
-  display: flex;
-  justify-content: center;
-  justify-items: center;
-  height: 100vh;
 }
 
 .calculator {
@@ -19,6 +15,7 @@ body {
   align-content: center;
   grid-template-columns: repeat(4, 100px);
   grid-template-rows: repeat(6, 100px);
+  height: 100vh;
 }
 
 .calculator > button {
@@ -57,6 +54,5 @@ body {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
+
