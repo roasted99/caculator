@@ -1,16 +1,17 @@
 const numberButtons = document.querySelectorAll('[data-type="number"]');
 const operationButtons = document.querySelectorAll('[data-type="operator"]');
-const equalsButton = document.querySelector('[data-type=equal]')
-const deleteButton = document.querySelector('[data-type=delete]')
-const allClearButton = document.querySelector('.clear')
-const display = document.querySelector('.output')
-const displayValue = display.textContent
+const equalsButton = document.querySelector('[data-type=equal]');
+const deleteButton = document.querySelector('[data-type=delete]');
+const allClearButton = document.querySelector('.clear');
+const display = document.querySelector('.output');
+
+let displayValue = display.textContent;
+let currentOperand = '';
+let prevOperand = '';
+let currentOperation = '';
 
 numberButtons.forEach(numberButton => {
-    numberButton.addEventListener('click', e => {
-        const numValue = e.target.textContent;
-        appendNumber(numValue);
-    })
+    numberButton.addEventListener('click', () => appendNumber(numberButton.textContent))
 })
 
 operationButtons.forEach(operationButton => {
@@ -22,63 +23,49 @@ operationButtons.forEach(operationButton => {
 
 allClearButton.addEventListener('click', clearOperator)
 
-equalsButton.addEventListener('click', () => {
-    display.textContent = compute()
-
-})
+equalsButton.addEventListener('click', evaluate)
 
 deleteButton.addEventListener('click', () => {
     display.textContent = display.textContent.toString().slice(0, -1)
 })
 
-function appendNumber(numValue) {
-    
-    const displayValue = display.textContent
-    
-    if (displayValue === '0') {
-        display.textContent = numValue
-    } else {
-        display.textContent = displayValue + numValue
+function appendNumber(number) {
+    if (display.textContent = '0') {
+        displayValue += number
     }
-    reset()
-    currentOperand = display.textContent
-    if (displayValue === '.' && display.textContent.includes('.')) return
+    display.textContent = displayValue
 }
 
-function reset(){
-    //display.textContent = ''
-    currentOperand = ''
-}
 
 function chooseOperator(operation) {
-    if (currentOperand === '') return
+    if (currentOperation !== '') evaluate()
     currentOperation = operation
-    //currentOperand = display.textContent
-    prevOperand = currentOperand
+    currentOperand = displayValue
+    console.log(currentOperand)
+    console.log(currentOperation)
 
-    if (prevOperand !== '') compute()
-    currentOperand = ''
-    // console.log(currentOperation)
-     console.log(prevOperand)
-    //console.log(currentOperand)
 }
 
-function evaluate(){
+function evaluate() {
     if (currentOperand === '') return
-    //prevOperand = currentOperand
-    currentOperation = operation
-   // currentOperand = ''
-    currentOperand = compute()
-   // console.log(prevOperand)
-   // console.log(current)
+    prevOperand = displayValue
+    console.log(prevOperand)
+
+    display.textContent = compute(currentOperation, prevOperand, currentOperand)
+
+    currentOperand = display.textContent
+    currentOperation = undefined
+    prevOperand = ''
+    return display.textContent
+
 }
 
-function compute() {
+function compute(operation, prev, current) {
     let computation
     current = parseFloat(currentOperand)
     prev = parseFloat(prevOperand)
     if (isNaN(prev) || isNaN(current)) return
-    switch (currentOperation) {
+    switch (operation) {
         case '+':
             computation = prev + current
             break;
@@ -97,12 +84,14 @@ function compute() {
         default:
             return
     }
-   return computation
+    return computation
 }
 
 function clearOperator() {
     display.textContent = '0'
+    displayValue = ''
     currentOperand = ''
     prevOperand = ''
     currentOperation = undefined
+
 }
