@@ -51,7 +51,7 @@ function evaluate() {
     prevOperand = displayValue
     console.log(prevOperand)
 
-    display.textContent = compute(currentOperation, prevOperand, currentOperand)
+    display.textContent = compute()
 
     currentOperand = display.textContent
     currentOperation = undefined
@@ -60,12 +60,12 @@ function evaluate() {
 
 }
 
-function compute(operation, prev, current) {
+function compute() {
     let computation
     current = parseFloat(currentOperand)
     prev = parseFloat(prevOperand)
     if (isNaN(prev) || isNaN(current)) return
-    switch (operation) {
+    switch (currentOperation) {
         case '+':
             computation = prev + current
             break;
